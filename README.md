@@ -56,6 +56,7 @@
 ## 5. 개발 환경 & 실행 방법
 - JDK 21, Gradle Wrapper 사용
 - H2 인메모리 DB 기본 실행(필요 시 schema/data/migration 구성 변경 가능)
+- TEST_PG_IV, TEST_PG_API_KEY 환경변수로 값 설정
 
 명령어
 ```bash

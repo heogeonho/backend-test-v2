@@ -4,6 +4,10 @@ spring:
     driver-class-name: org.h2.Driver
     username: sa
     password: ""
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
   jpa:
     hibernate:
       ddl-auto: update
@@ -17,3 +21,8 @@ spring:
 server:
   port: 8080
 
+# TestPG 연동 설정
+test-pg:
+  base-url: ${TEST_PG_BASE_URL:https://api-test-pg.bigs.im}
+  api-key: ${TEST_PG_API_KEY:}
+  iv: ${TEST_PG_IV:}

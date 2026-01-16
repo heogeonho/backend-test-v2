@@ -26,7 +26,6 @@ class PaymentService(
 ) : PaymentUseCase {
     /**
      * 결제 승인/수수료 계산/저장을 순차적으로 수행합니다.
-     * - 현재 예시 구현은 하드코드된 수수료(3% + 100)로 계산합니다.
      * - 과제: 제휴사별 수수료 정책을 적용하도록 개선해 보세요.
      */
     override fun pay(command: PaymentCommand): Payment {
@@ -46,13 +45,15 @@ class PaymentService(
                 productName = command.productName,
             ),
         )
-        val hardcodedRate = java.math.BigDecimal("0.0300")
-        val hardcodedFixed = java.math.BigDecimal("100")
-        val (fee, net) = FeeCalculator.calculateFee(command.amount, hardcodedRate, hardcodedFixed)
+
+        val policy = feePolicyRepository.findEffectivePolicy(partner.id, approve.approvedAt)
+            ?: throw IllegalStateException("No fee policy found for partner ${partner.id} at ${approve.approvedAt}")
+
+        val (fee, net) = FeeCalculator.calculateFee(command.amount, policy.percentage, policy.fixedFee)
         val payment = Payment(
             partnerId = partner.id,
             amount = command.amount,
-            appliedFeeRate = hardcodedRate,
+            appliedFeeRate = policy.percentage,
             feeAmount = fee,
             netAmount = net,
             cardBin = command.cardBin,
