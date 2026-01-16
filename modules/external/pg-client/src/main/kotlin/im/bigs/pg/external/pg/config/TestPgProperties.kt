@@ -7,7 +7,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties
  */
 @ConfigurationProperties(prefix = "test-pg")
 data class TestPgProperties(
-    val baseUrl: String = "https://api-test-pg.bigs.im",
-    val apiKey: String = "",
-    val iv: String = "",
+    val baseUrl: String,
+    val apiKey: String,
+    val iv: String,
 )
