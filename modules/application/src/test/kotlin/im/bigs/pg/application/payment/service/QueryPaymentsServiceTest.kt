@@ -146,16 +146,18 @@ class QueryPaymentsServiceTest {
         )
         // Given - 통계는 동일 (전체 10건)
         every { paymentRepository.summary(any()) } returns PaymentSummaryProjection(
-            count = 10,  // 동일!
-            totalAmount = BigDecimal("100000"),  // 동일!
-            totalNetAmount = BigDecimal("97650"),  // 동일!
+            count = 10,
+            totalAmount = BigDecimal("100000"),
+            totalNetAmount = BigDecimal("97650"),
         )
 
         // When - 두 번째 페이지 조회 (커서 사용)
-        val secondPage = service.query(QueryFilter(
-            cursor = firstPage.nextCursor,
-            limit = 2,
-        ))
+        val secondPage = service.query(
+            QueryFilter(
+                cursor = firstPage.nextCursor,
+                limit = 2,
+            ),
+        )
 
         // Then - items는 다른 2건
         assertEquals(2, secondPage.items.size)
